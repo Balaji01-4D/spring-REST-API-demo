@@ -19,8 +19,11 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<Task> getTasks(){
-        return service.getTasks();
+    public List<Task> getTasks(@RequestParam(required = false) Boolean status){
+        if (status == null){
+            return service.getTasks();
+        }
+        return service.getCompletedTask(status);
     }
 
     @GetMapping("/tasks/{id}")
@@ -29,19 +32,19 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public String postTask(Task task){
+    public String postTask(@RequestBody Task task){
         service.postTask(task);
         return task + " added";
     }
 
     @PutMapping("/tasks")
-    public String putTask(Task task){
+    public String putTask(@RequestBody Task task){
         service.putTask(task);
         return task + " updated";
     }
 
-    @DeleteMapping("/tasks")
-    public String deleteTask(int id){
+    @DeleteMapping("/tasks/{id}")
+    public String deleteTask(@PathVariable int id){
         service.deleteTask(id);
         return "task " + id + " is deleted";
     }

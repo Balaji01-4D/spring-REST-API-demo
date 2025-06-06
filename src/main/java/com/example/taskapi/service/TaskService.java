@@ -50,4 +50,13 @@ public class TaskService {
         if (index >= 0) taskList.remove(index);
     }
 
+    public List<Task> getCompletedTask(boolean status) {
+
+        List<Task> list = new ArrayList<>();
+
+        for (Task task : taskList) {
+            if (status == task.isCompleted()) list.add(task);
+        }
+        return list;
+    }
 }
