@@ -1,58 +1,45 @@
 package com.example.taskapi.service;
 
-import com.example.taskapi.Task;
+import com.example.taskapi.model.Task;
+import com.example.taskapi.repo.TaskRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 @Service
 public class TaskService {
 
-    private final List<Task> taskList = new ArrayList<>(
-            Arrays.asList(
-                    new Task(1,"i have to go to mall",false),
-                    new Task(2,"i have to prepare for exam",false),
-                    new Task(3,"i have to write down the problems",false),
-                    new Task(4,"i have to get a new bus pass",false),
-                    new Task(5,"i have to attend meeting at 9:00",false)
-            )
-    );
-
-    private int searchById(int id){
-        for (int i = 0; i < taskList.size(); i++){
-            if (id == taskList.get(i).getId()) return i;
-        }
-        return -1;
-    }
+    @Autowired
+    private TaskRepo repo;
 
     public List<Task> getTasks(){
-        return this.taskList;
+        return repo.findAll();
     }
 
     public Task getTaskById(int id){
-        return taskList.get(this.searchById(id));
+        return repo.findById(id).orElse(new Task(1,null, false));
     }
 
     public void postTask(Task task){
-        this.taskList.add(task);
+        repo.save(task);
     }
 
     public void putTask(Task task){
-        int index = this.searchById(task.getId());
-        taskList.set(index, task);
+        repo.save(task);
     }
 
     public void deleteTask(int id){
-        int index = this.searchById(id);
-        if (index >= 0) taskList.remove(index);
+        repo.deleteById(id);
     }
 
     public List<Task> getCompletedTask(boolean status) {
 
         List<Task> list = new ArrayList<>();
+
+        List<Task> taskList = repo.findAll();
 
         for (Task task : taskList) {
             if (status == task.isCompleted()) list.add(task);

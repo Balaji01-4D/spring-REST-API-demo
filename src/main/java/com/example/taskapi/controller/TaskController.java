@@ -1,6 +1,6 @@
 package com.example.taskapi.controller;
 
-import com.example.taskapi.Task;
+import com.example.taskapi.model.Task;
 import com.example.taskapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
